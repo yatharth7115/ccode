@@ -1,0 +1,14 @@
+A = [0 1; -1 -2]; B = [0;1]; Cmat = [1 0]; D = 0;
+
+% eigenvector and generalized eigenvector
+v = [1; -1];       % solution of (A+I)*v = 0
+w = [1; 0];        % pick w satisfying (A+I)*w = v -> check or solve
+
+T = [v w];         % columns are chain vectors
+J = inv(T)*A*T;    % should be [-1 1;0 -1]
+B_J = inv(T)*B;
+C_J = Cmat*T;
+
+% verify TF
+[numJ,denJ] = ss2tf(J,B_J,C_J,D);
+tf(numJ,denJ)
