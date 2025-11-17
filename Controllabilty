@@ -1,0 +1,13 @@
+A = [0 1; -1/2 -1/2];
+B = [0; 1/2];
+C = [1 0];
+D = 0;
+
+Co = ctrb(A,B);
+Ob = obsv(A,C);
+
+rankCo = rank(Co)
+rankOb = rank(Ob)
+
+disp('Controllability matrix:'); Co
+disp('Observability matrix:');  Ob
