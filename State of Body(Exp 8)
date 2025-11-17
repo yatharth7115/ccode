@@ -1,0 +1,35 @@
+clear; clc; close all
+
+T = 0.1;
+N = 100;
+x0 = [0; 5; -0.1];
+
+F = [1 T 0.5*T^2;
+     0 1 T;
+     0 0 1];
+
+Q = diag([1e-4, 1e-5, 1e-6]);   % process noise covariance
+
+x = zeros(3, N+1);
+x(:,1) = x0;
+
+for k = 1:N
+    w = mvnrnd(zeros(1,3), Q)';     % 3x1 Gaussian noise vector
+    x(:,k+1) = F * x(:,k) + w;
+end
+
+time = (0:N)*T;
+
+figure
+subplot(3,1,1)
+plot(time, x(1,:), 'LineWidth', 1.5)
+ylabel('Position s')
+
+subplot(3,1,2)
+plot(time, x(2,:), 'LineWidth', 1.5)
+ylabel('Velocity v')
+
+subplot(3,1,3)
+plot(time, x(3,:), 'LineWidth', 1.5)
+ylabel('Acceleration a')
+xlabel('Time (s)')
