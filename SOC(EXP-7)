@@ -1,0 +1,54 @@
+%exp07
+R0=0.01;
+R1=0.015;
+C1=2400;
+alpha=0.1;
+Qnom=2.3;
+dt=1;
+A=[1 0;0 exp(-dt/(R1*C1))];
+B=[-dt/Qnom ;R1*(1-exp(-dt/(R1*C1)))];
+C=[alpha -1];
+D=[-R0];
+
+L=place(A',C',[0.5 0.6])';
+tspan=1:0.1:5;
+n=length(tspan);
+u=0.5*ones(1,n);
+x=zeros(2,n);
+xhat=zeros(2,n);
+y=zeros(1,n);
+y_hat=zeros(1,n);
+x(:,1)=[0.9;4];
+xhat(:,1)=[0 ;4];
+
+
+
+
+for k=1:n-1;
+   x(:,k+1)    = A*x(:,k) + B*u(k);
+    y(k)        = C*x(:,k) + D*u(k);
+    yhat(k)     = C*xhat(:,k) + D*u(k);
+    xhat(:,k+1) = A*xhat(:,k) + B*u(k) + L*(y(k)-yhat(k));
+
+end
+
+% % --- Plot SOC ---
+% subplot(2,1,1);
+% plot(tspan, x(1,:), 'b', 'LineWidth', 1.6); hold on;
+% plot(tspan, xhat(1,:), 'r--', 'LineWidth', 1.6);
+% title('State $x_1$ (SOC) vs Estimated $\hat{x}_1$', 'Interpreter','latex');
+% xlabel('Time (s)', 'Interpreter','latex');
+% ylabel('SOC', 'Interpreter','latex');
+% legend({'True $x_1$','Estimated $\hat{x}_1$'}, 'Interpreter','latex');
+% grid on;
+% 
+% % --- Plot V_RC ---
+% subplot(2,1,2);
+% plot(tspan, x(2,:), 'b', 'LineWidth', 1.6); hold on;
+% plot(tspan, xhat(2,:), 'r--', 'LineWidth', 1.6);
+% 
+% xlabel('Time (s)', 'Interpreter','latex');
+% ylabel('$V_{RC}$ (V)', 'Interpreter','latex');
+% legend({'True $x_2$','Estimated $\hat{x}_2$'}, 'Interpreter','latex');
+% grid on;
+%
