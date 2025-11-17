@@ -1,0 +1,8 @@
+num = [1];
+den = [1 1];
+
+sys_tf = tf(num, den);
+
+[A, B, C, D] = tf2ss(num, den)
+sys_ss=ss(A,B,C,D);
+sys_ss
